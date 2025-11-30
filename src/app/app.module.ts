@@ -19,6 +19,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './pages/login/login.component';
 import { SeriesDashboardComponent } from './pages/series-dashboard/series-dashboard.component';
 import { SeriesFormComponent } from './pages/series-form/series-form.component';
+import { EmpleadosDashboardComponent } from './pages/empleados-dashboard/empleados-dashboard.component';
+import { EmpleadosFormComponent } from './pages/empleados-form/empleados-form.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
@@ -26,7 +28,9 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     AppComponent,
     LoginComponent,
     SeriesDashboardComponent,
-    SeriesFormComponent
+    SeriesFormComponent,
+    EmpleadosDashboardComponent,
+    EmpleadosFormComponent
   ],
   imports: [
     BrowserModule,

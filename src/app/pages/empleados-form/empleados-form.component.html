@@ -1,0 +1,61 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <button mat-icon-button (click)="cancel()" aria-label="Regresar">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>{{ title }}</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <div>
+        <mat-card-title>{{ title }}</mat-card-title>
+        <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="empleadoForm" (ngSubmit)="handleSubmit()">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej. Ana Pérez" />
+            <mat-error *ngIf="empleadoForm.controls.nombre.touched && empleadoForm.controls.nombre.invalid">
+              El nombre es obligatorio y debe tener al menos 3 caracteres
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Puesto</mat-label>
+            <input matInput formControlName="puesto" placeholder="Ej. Administrador" />
+            <mat-error *ngIf="empleadoForm.controls.puesto.touched && empleadoForm.controls.puesto.invalid">
+              El puesto es obligatorio y debe tener al menos 3 caracteres
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput [type]="isReadOnly ? 'text' : 'password'" formControlName="contrasena" />
+            <mat-error *ngIf="empleadoForm.controls.contrasena.touched && empleadoForm.controls.contrasena.invalid">
+              La contraseña es obligatoria y debe tener al menos 6 caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+
+      <div class="loading-block" *ngIf="loadingEmpleado">
+        <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+        <span>Cargando información...</span>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="actions" *ngIf="!isReadOnly">
+      <button mat-stroked-button color="primary" (click)="cancel()" [disabled]="savingEmpleado">Cancelar</button>
+      <button mat-flat-button color="accent" (click)="handleSubmit()" [disabled]="savingEmpleado">
+        <mat-icon>save</mat-icon>
+        Guardar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

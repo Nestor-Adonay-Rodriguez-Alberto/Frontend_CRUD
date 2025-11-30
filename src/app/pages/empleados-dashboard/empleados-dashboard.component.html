@@ -1,0 +1,89 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <div class="toolbar-title">
+    <mat-icon>groups</mat-icon>
+    <span>Panel de Empleados</span>
+  </div>
+  <span class="spacer"></span>
+  <button mat-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Cerrar sesión
+  </button>
+</mat-toolbar>
+
+<div class="dashboard-container">
+  <mat-card>
+    <mat-card-header>
+      <div class="header-content">
+        <div>
+          <mat-card-title>Listado de empleados</mat-card-title>
+          <mat-card-subtitle>Administra la información del personal</mat-card-subtitle>
+        </div>
+
+        <div class="header-actions">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Buscar por nombre o puesto</mat-label>
+            <input matInput [formControl]="searchControl" placeholder="Ej. Administrador" />
+            <button mat-icon-button matSuffix *ngIf="searchControl.value" (click)="searchControl.setValue('')" aria-label="Limpiar búsqueda">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <button mat-flat-button color="accent" (click)="createEmpleado()">
+            <mat-icon>add</mat-icon>
+            Nuevo empleado
+          </button>
+        </div>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="table-wrapper" *ngIf="!loadingList; else loadingState">
+        <table mat-table [dataSource]="empleados" class="empleados-table" *ngIf="empleados.length; else emptyState">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let empleado">{{ empleado.nombre }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="puesto">
+            <th mat-header-cell *matHeaderCellDef>Puesto</th>
+            <td mat-cell *matCellDef="let empleado">{{ empleado.puesto }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let empleado">
+              <button mat-icon-button color="primary" (click)="viewEmpleado(empleado)" aria-label="Ver detalle">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" (click)="editEmpleado(empleado)" aria-label="Editar">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <ng-template #loadingState>
+        <div class="loading-block">
+          <mat-progress-spinner diameter="48" mode="indeterminate"></mat-progress-spinner>
+          <span>Cargando empleados...</span>
+        </div>
+      </ng-template>
+
+      <ng-template #emptyState>
+        <div class="empty-block">
+          <mat-icon>sentiment_dissatisfied</mat-icon>
+          <p>No hay resultados para mostrar</p>
+        </div>
+      </ng-template>
+    </mat-card-content>
+
+    <mat-card-actions class="paginator" *ngIf="totalItems > pageSize">
+      <button mat-button (click)="previousPage()" [disabled]="page === 1">Anterior</button>
+      <span>Página {{ page }} de {{ totalPages }}</span>
+      <button mat-button (click)="nextPage()" [disabled]="page * pageSize >= totalItems">Siguiente</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

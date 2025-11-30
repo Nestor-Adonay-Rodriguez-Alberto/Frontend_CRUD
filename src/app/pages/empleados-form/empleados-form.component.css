@@ -1,0 +1,36 @@
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.form-container {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.loading-block {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  color: #666;
+}

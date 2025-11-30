@@ -6,9 +6,11 @@ import { SeriesFormComponent } from './pages/series-form/series-form.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { EmpleadosDashboardComponent } from './pages/empleados-dashboard/empleados-dashboard.component';
 import { EmpleadosFormComponent } from './pages/empleados-form/empleados-form.component';
+import { MenuComponent } from './pages/menu/menu.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'menu', component: MenuComponent, canActivate: [AuthGuard] },
   { path: 'series', component: SeriesDashboardComponent, canActivate: [AuthGuard] },
   { path: 'series/new', component: SeriesFormComponent, canActivate: [AuthGuard], data: { mode: 'create' } },
   { path: 'series/:id', component: SeriesFormComponent, canActivate: [AuthGuard], data: { mode: 'view' } },
@@ -17,8 +19,8 @@ const routes: Routes = [
   { path: 'empleados/new', component: EmpleadosFormComponent, canActivate: [AuthGuard], data: { mode: 'create' } },
   { path: 'empleados/:id', component: EmpleadosFormComponent, canActivate: [AuthGuard], data: { mode: 'view' } },
   { path: 'empleados/:id/edit', component: EmpleadosFormComponent, canActivate: [AuthGuard], data: { mode: 'edit' } },
-  { path: '', pathMatch: 'full', redirectTo: 'series' },
-  { path: '**', redirectTo: 'series' }
+  { path: '', pathMatch: 'full', redirectTo: 'menu' },
+  { path: '**', redirectTo: 'menu' }
 ];
 
 @NgModule({

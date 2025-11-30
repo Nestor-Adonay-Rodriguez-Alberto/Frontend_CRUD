@@ -1,0 +1,33 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <div class="toolbar-title">
+    <mat-icon>dashboard</mat-icon>
+    <span>Panel principal</span>
+  </div>
+  <span class="spacer"></span>
+  <button mat-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Cerrar sesión
+  </button>
+</mat-toolbar>
+
+<div class="menu-container">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <div>
+        <mat-card-title>Bienvenido</mat-card-title>
+        <mat-card-subtitle>Selecciona la sección que deseas administrar</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+  <div class="options-grid">
+    <mat-card class="option-card" *ngFor="let option of options" (click)="navigate(option.route)" tabindex="0">
+      <mat-card-content>
+        <mat-icon>{{ option.icon }}</mat-icon>
+        <h3>{{ option.title }}</h3>
+        <p>{{ option.description }}</p>
+        <button mat-stroked-button color="primary">Ir a {{ option.title }}</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

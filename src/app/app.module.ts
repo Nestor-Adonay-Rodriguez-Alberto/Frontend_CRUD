@@ -21,6 +21,7 @@ import { SeriesDashboardComponent } from './pages/series-dashboard/series-dashbo
 import { SeriesFormComponent } from './pages/series-form/series-form.component';
 import { EmpleadosDashboardComponent } from './pages/empleados-dashboard/empleados-dashboard.component';
 import { EmpleadosFormComponent } from './pages/empleados-form/empleados-form.component';
+import { MenuComponent } from './pages/menu/menu.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
@@ -30,7 +31,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     SeriesDashboardComponent,
     SeriesFormComponent,
     EmpleadosDashboardComponent,
-    EmpleadosFormComponent
+    EmpleadosFormComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

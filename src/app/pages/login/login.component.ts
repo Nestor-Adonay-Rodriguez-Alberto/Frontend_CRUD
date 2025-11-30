@@ -37,7 +37,7 @@ export class LoginComponent {
     this.authService.login(credentials).subscribe({
       next: () => {
         this.notification.success('Bienvenido de nuevo');
-        this.router.navigate(['/series']);
+        this.router.navigate(['/menu']);
       },
       error: error => {
         this.notification.error(error.message || 'No se pudo iniciar sesión');

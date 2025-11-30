@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+	font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	color: #0f172a;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background-color: #f5f7fb;
+}
+
+.snackbar-success {
+	background-color: #2e7d32;
+	color: #fff;
+}
+
+.snackbar-error {
+	background-color: #c62828;
+	color: #fff;
+}
+
+.snackbar-info {
+	background-color: #0288d1;
+	color: #fff;
+}
+
+mat-card {
+	box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+	border-radius: 16px;
+}

@@ -1,0 +1,111 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <div class="toolbar-title">
+    <mat-icon>collections_bookmark</mat-icon>
+    <span>Panel de Series</span>
+  </div>
+  <span class="spacer"></span>
+  <button mat-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Cerrar sesión
+  </button>
+</mat-toolbar>
+
+<div class="dashboard-container">
+  <section class="form-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ serieForm.value.id ? 'Editar serie' : 'Nueva serie' }}</mat-card-title>
+        <mat-card-subtitle>{{ serieForm.value.id ? 'Actualiza los datos y guarda los cambios' : 'Completa el formulario para agregar una serie' }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="serieForm" (ngSubmit)="handleSubmit()" class="serie-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="titulo" />
+            <mat-error *ngIf="serieForm.get('titulo')?.hasError('required')">El título es obligatorio</mat-error>
+            <mat-error *ngIf="serieForm.get('titulo')?.hasError('minlength')">Debe tener al menos 3 caracteres</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Temporadas</mat-label>
+            <input matInput type="number" formControlName="temporadas" min="1" />
+            <mat-error *ngIf="serieForm.get('temporadas')?.hasError('required')">Ingrese el número de temporadas</mat-error>
+            <mat-error *ngIf="serieForm.get('temporadas')?.hasError('min')">Debe ser mayor o igual a 1</mat-error>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-stroked-button color="primary" type="button" (click)="resetForm()">Limpiar</button>
+            <button mat-flat-button color="accent" type="submit" [disabled]="savingSerie">
+              <mat-progress-spinner *ngIf="savingSerie" diameter="20" mode="indeterminate"></mat-progress-spinner>
+              <span *ngIf="!savingSerie">{{ serieForm.value.id ? 'Actualizar' : 'Crear' }}</span>
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section class="list-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Listado de series</mat-card-title>
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar por título</mat-label>
+          <input matInput [formControl]="searchControl" placeholder="Ej. The Witcher" />
+          <button mat-icon-button matSuffix *ngIf="searchControl.value" (click)="searchControl.setValue('')" aria-label="Limpiar búsqueda">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="table-wrapper" *ngIf="!loadingList; else loadingState">
+          <table mat-table [dataSource]="series" class="series-table" *ngIf="series.length; else emptyState">
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef>Título</th>
+              <td mat-cell *matCellDef="let serie">{{ serie.titulo }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="temporadas">
+              <th mat-header-cell *matHeaderCellDef>Temporadas</th>
+              <td mat-cell *matCellDef="let serie">{{ serie.temporadas }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let serie">
+                <button mat-icon-button color="primary" (click)="editSerie(serie)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+
+        <ng-template #loadingState>
+          <div class="loading-block">
+            <mat-progress-spinner diameter="48" mode="indeterminate"></mat-progress-spinner>
+            <span>Cargando series...</span>
+          </div>
+        </ng-template>
+
+        <ng-template #emptyState>
+          <div class="empty-block">
+            <mat-icon>sentiment_dissatisfied</mat-icon>
+            <p>No hay resultados para mostrar</p>
+          </div>
+        </ng-template>
+      </mat-card-content>
+
+      <mat-card-actions class="paginator" *ngIf="totalItems > pageSize">
+        <button mat-button (click)="previousPage()" [disabled]="page === 1">Anterior</button>
+        <span>Página {{ page }} de {{ totalPages }}</span>
+        <button mat-button (click)="nextPage()" [disabled]="page * pageSize >= totalItems">Siguiente</button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
+</div>

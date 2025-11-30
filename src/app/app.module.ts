@@ -18,13 +18,15 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './pages/login/login.component';
 import { SeriesDashboardComponent } from './pages/series-dashboard/series-dashboard.component';
+import { SeriesFormComponent } from './pages/series-form/series-form.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    SeriesDashboardComponent
+    SeriesDashboardComponent,
+    SeriesFormComponent
   ],
   imports: [
     BrowserModule,

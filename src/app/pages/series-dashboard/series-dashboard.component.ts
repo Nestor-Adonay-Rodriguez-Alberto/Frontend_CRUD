@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { SeriesService } from '../../core/services/series.service';
-import { Serie, emptySerie } from '../../core/models/serie.model';
+import { Serie } from '../../core/models/serie.model';
 
 @Component({
   selector: 'app-series-dashboard',
@@ -18,20 +19,16 @@ export class SeriesDashboardComponent implements OnInit, OnDestroy {
   page = 1;
   pageSize = 5;
   loadingList = false;
-  savingSerie = false;
   private searchSub?: Subscription;
 
-  readonly searchControl = this.fb.control('');
+  readonly searchControl = new FormControl('');
 
-  readonly serieForm = this.fb.group({
-    id: [0],
-    titulo: ['', [Validators.required, Validators.minLength(3)]],
-    temporadas: [1, [Validators.required, Validators.min(1)]]
-  });
-
-  constructor(private fb: FormBuilder, private seriesService: SeriesService, private notification: NotificationService, private authService: AuthService) {
-    this.resetForm();
-  }
+  constructor(
+    private seriesService: SeriesService,
+    private notification: NotificationService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadSeries();
@@ -64,46 +61,12 @@ export class SeriesDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  handleSubmit(): void {
-    if (this.serieForm.invalid) {
-      this.serieForm.markAllAsTouched();
-      return;
-    }
-
-    const { id, ...dto } = this.serieForm.getRawValue();
-    const payload = {
-      titulo: (dto.titulo || '').trim(),
-      temporadas: Math.max(1, Number(dto.temporadas) || 1)
-    };
-    this.savingSerie = true;
-
-    const request$ = id && id > 0 ? this.seriesService.updateSerie(id, payload) : this.seriesService.createSerie(payload);
-
-    request$.subscribe({
-      next: serie => {
-        this.notification.success(id && id > 0 ? 'Serie actualizada' : 'Serie creada');
-        this.resetForm();
-        this.loadSeries();
-        this.savingSerie = false;
-      },
-      error: error => {
-        this.notification.error(error.message || 'No se pudo guardar la serie');
-        this.savingSerie = false;
-      }
-    });
+  createSerie(): void {
+    this.router.navigate(['/series/new']);
   }
 
   editSerie(serie: Serie): void {
-    this.serieForm.patchValue(serie);
-    if (typeof window !== 'undefined') {
-      window.scroll({ top: 0, behavior: 'smooth' });
-    }
-  }
-
-  resetForm(): void {
-    this.serieForm.reset(emptySerie());
-    this.serieForm.markAsPristine();
-    this.serieForm.markAsUntouched();
+    this.router.navigate(['/series', serie.id, 'edit']);
   }
 
   previousPage(): void {

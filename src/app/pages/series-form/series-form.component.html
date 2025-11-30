@@ -1,0 +1,53 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <button mat-icon-button routerLink="/series" aria-label="Volver al listado">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>{{ title }}</span>
+  <span class="spacer"></span>
+  <button mat-button (click)="cancel()">
+    <mat-icon>list</mat-icon>
+    Volver al listado
+  </button>
+</mat-toolbar>
+
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ title }}</mat-card-title>
+      <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content *ngIf="!loadingSerie; else loadingState">
+      <form [formGroup]="serieForm" (ngSubmit)="handleSubmit()" class="serie-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="titulo" />
+          <mat-error *ngIf="serieForm.get('titulo')?.hasError('required')">El título es obligatorio</mat-error>
+          <mat-error *ngIf="serieForm.get('titulo')?.hasError('minlength')">Debe tener al menos 3 caracteres</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Temporadas</mat-label>
+          <input matInput type="number" formControlName="temporadas" min="1" />
+          <mat-error *ngIf="serieForm.get('temporadas')?.hasError('required')">Ingrese el número de temporadas</mat-error>
+          <mat-error *ngIf="serieForm.get('temporadas')?.hasError('min')">Debe ser mayor o igual a 1</mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-stroked-button type="button" (click)="cancel()">Cancelar</button>
+          <button mat-flat-button color="accent" type="submit" [disabled]="savingSerie">
+            <mat-progress-spinner *ngIf="savingSerie" diameter="20" mode="indeterminate"></mat-progress-spinner>
+            <span *ngIf="!savingSerie">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #loadingState>
+  <div class="loading-block">
+    <mat-progress-spinner diameter="48" mode="indeterminate"></mat-progress-spinner>
+    <span>Cargando información...</span>
+  </div>
+</ng-template>

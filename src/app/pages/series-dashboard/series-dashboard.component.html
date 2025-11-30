@@ -51,7 +51,10 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Acciones</th>
             <td mat-cell *matCellDef="let serie">
-              <button mat-icon-button color="primary" (click)="editSerie(serie)" aria-label="Editar serie">
+              <button mat-icon-button color="primary" (click)="viewSerie(serie)" aria-label="Ver detalle">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" (click)="editSerie(serie)" aria-label="Editar serie">
                 <mat-icon>edit</mat-icon>
               </button>
             </td>

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { SeriesService } from '../../core/services/series.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { Serie, emptySerie } from '../../core/models/serie.model';
@@ -10,8 +12,9 @@ import { Serie, emptySerie } from '../../core/models/serie.model';
   templateUrl: './series-form.component.html',
   styleUrls: ['./series-form.component.css']
 })
-export class SeriesFormComponent implements OnInit {
-  isEditMode = false;
+export class SeriesFormComponent implements OnInit, OnDestroy {
+  private routeSub?: Subscription;
+  private mode: 'create' | 'edit' | 'view' = 'create';
   serieId?: number;
   loadingSerie = false;
   savingSerie = false;
@@ -26,16 +29,19 @@ export class SeriesFormComponent implements OnInit {
     private seriesService: SeriesService,
     private notification: NotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
     this.serieForm.reset(emptySerie());
-    this.route.paramMap.subscribe(params => {
+    this.applyModeFromRoute();
+
+    this.routeSub = this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
 
       if (!idParam) {
-        this.isEditMode = false;
+        this.setMode('create');
         this.serieId = undefined;
         this.serieForm.reset(emptySerie());
         return;
@@ -48,13 +54,23 @@ export class SeriesFormComponent implements OnInit {
         return;
       }
 
-      this.isEditMode = true;
+      if (this.mode === 'create') {
+        this.setMode('edit');
+      }
       this.serieId = parsedId;
       this.fetchSerie(parsedId);
     });
   }
 
+  ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
+  }
+
   handleSubmit(): void {
+    if (this.isReadOnly) {
+      return;
+    }
+
     if (this.serieForm.invalid) {
       this.serieForm.markAllAsTouched();
       return;
@@ -93,6 +109,9 @@ export class SeriesFormComponent implements OnInit {
     this.seriesService.getSerieById(id).subscribe({
       next: serie => {
         this.serieForm.patchValue(serie);
+        if (this.isReadOnly) {
+          this.serieForm.disable({ emitEvent: false });
+        }
         this.loadingSerie = false;
       },
       error: error => {
@@ -105,16 +124,52 @@ export class SeriesFormComponent implements OnInit {
 
   private navigateBack(): void {
     this.savingSerie = false;
+    if (window.history.length > 1) {
+      this.location.back();
+      return;
+    }
+
     this.router.navigate(['/series']);
   }
 
   get title(): string {
+    if (this.isReadOnly) {
+      return 'Detalle de la serie';
+    }
+
     return this.isEditMode ? 'Editar serie' : 'Nueva serie';
   }
 
   get subtitle(): string {
+    if (this.isReadOnly) {
+      return 'Consulta la información registrada para esta serie';
+    }
+
     return this.isEditMode
       ? 'Actualiza la información y guarda los cambios'
       : 'Completa el formulario para agregar una serie al catálogo';
+  }
+
+  get isEditMode(): boolean {
+    return this.mode === 'edit';
+  }
+
+  get isReadOnly(): boolean {
+    return this.mode === 'view';
+  }
+
+  private applyModeFromRoute(): void {
+    const routeMode = (this.route.snapshot.data['mode'] as 'create' | 'edit' | 'view' | undefined) ?? 'create';
+    this.setMode(routeMode);
+  }
+
+  private setMode(mode: 'create' | 'edit' | 'view'): void {
+    this.mode = mode;
+
+    if (this.isReadOnly) {
+      this.serieForm.disable({ emitEvent: false });
+    } else {
+      this.serieForm.enable({ emitEvent: false });
+    }
   }
 }

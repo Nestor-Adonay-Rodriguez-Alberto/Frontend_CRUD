@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="app-toolbar">
-  <button mat-icon-button routerLink="/series" aria-label="Volver al listado">
+  <button mat-icon-button (click)="cancel()" aria-label="Volver al listado">
     <mat-icon>arrow_back</mat-icon>
   </button>
   <span>{{ title }}</span>
@@ -34,8 +34,10 @@
         </mat-form-field>
 
         <div class="form-actions">
-          <button mat-stroked-button type="button" (click)="cancel()">Cancelar</button>
-          <button mat-flat-button color="accent" type="submit" [disabled]="savingSerie">
+          <button mat-stroked-button type="button" (click)="cancel()">
+            {{ isReadOnly ? 'Volver' : 'Cancelar' }}
+          </button>
+          <button *ngIf="!isReadOnly" mat-flat-button color="accent" type="submit" [disabled]="savingSerie">
             <mat-progress-spinner *ngIf="savingSerie" diameter="20" mode="indeterminate"></mat-progress-spinner>
             <span *ngIf="!savingSerie">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
           </button>

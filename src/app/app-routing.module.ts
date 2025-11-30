@@ -8,8 +8,9 @@ import { AuthGuard } from './core/guards/auth.guard';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'series', component: SeriesDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'series/new', component: SeriesFormComponent, canActivate: [AuthGuard] },
-  { path: 'series/:id/edit', component: SeriesFormComponent, canActivate: [AuthGuard] },
+  { path: 'series/new', component: SeriesFormComponent, canActivate: [AuthGuard], data: { mode: 'create' } },
+  { path: 'series/:id', component: SeriesFormComponent, canActivate: [AuthGuard], data: { mode: 'view' } },
+  { path: 'series/:id/edit', component: SeriesFormComponent, canActivate: [AuthGuard], data: { mode: 'edit' } },
   { path: '', pathMatch: 'full', redirectTo: 'series' },
   { path: '**', redirectTo: 'series' }
 ];

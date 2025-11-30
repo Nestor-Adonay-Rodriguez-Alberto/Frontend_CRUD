@@ -69,6 +69,10 @@ export class SeriesDashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/series', serie.id, 'edit']);
   }
 
+  viewSerie(serie: Serie): void {
+    this.router.navigate(['/series', serie.id]);
+  }
+
   previousPage(): void {
     if (this.page === 1) {
       return;

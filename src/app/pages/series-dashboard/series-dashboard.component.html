@@ -4,19 +4,37 @@
     <span>Panel de Series</span>
   </div>
   <span class="spacer"></span>
-  <button mat-button (click)="logout()">
+  <button mat-stroked-button class="outline-action" (click)="logout()">
     <mat-icon>logout</mat-icon>
     Cerrar sesión
   </button>
 </mat-toolbar>
 
 <div class="dashboard-container">
-  <mat-card>
+  <section class="hero-section glass-panel">
+    <div>
+      <span class="pill">Catálogo</span>
+      <h2 class="hero-title">Observa y actualiza todas tus series</h2>
+      <p class="hero-subtitle">Busca, consulta y edita cada registro con una vista limpia y centrada en la productividad.</p>
+    </div>
+    <div class="hero-metrics">
+      <div class="metric-card">
+        <span>Total de registros</span>
+        <strong>{{ totalItems || series.length }}</strong>
+      </div>
+      <div class="metric-card">
+        <span>Mostrando por página</span>
+        <strong>{{ pageSize }}</strong>
+      </div>
+    </div>
+  </section>
+
+  <mat-card class="dashboard-card glass-panel">
     <mat-card-header>
       <div class="header-content">
         <div>
           <mat-card-title>Listado de series</mat-card-title>
-          <mat-card-subtitle>Gestiona el catálogo desde un solo lugar</mat-card-subtitle>
+          <mat-card-subtitle>Mantén el inventario al día</mat-card-subtitle>
         </div>
 
         <div class="header-actions">
@@ -27,7 +45,7 @@
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
-          <button mat-flat-button color="accent" (click)="createSerie()">
+          <button mat-flat-button class="elevated-action" (click)="createSerie()">
             <mat-icon>add</mat-icon>
             Nueva serie
           </button>
@@ -81,9 +99,9 @@
     </mat-card-content>
 
     <mat-card-actions class="paginator" *ngIf="totalItems > pageSize">
-      <button mat-button (click)="previousPage()" [disabled]="page === 1">Anterior</button>
+      <button mat-stroked-button (click)="previousPage()" [disabled]="page === 1">Anterior</button>
       <span>Página {{ page }} de {{ totalPages }}</span>
-      <button mat-button (click)="nextPage()" [disabled]="page * pageSize >= totalItems">Siguiente</button>
+      <button mat-stroked-button (click)="nextPage()" [disabled]="page * pageSize >= totalItems">Siguiente</button>
     </mat-card-actions>
   </mat-card>
 </div>

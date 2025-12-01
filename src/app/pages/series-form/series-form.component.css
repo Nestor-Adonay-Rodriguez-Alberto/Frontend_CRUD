@@ -2,6 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  backdrop-filter: blur(12px);
 }
 
 .spacer {
@@ -10,29 +11,51 @@
 
 .form-container {
   min-height: calc(100vh - 64px);
-  padding: 2rem 1.5rem;
-  background: #f5f7fb;
+  padding: clamp(1.5rem, 4vw, 3rem);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 }
 
-mat-card {
-  width: 100%;
-  max-width: 560px;
+.form-card {
+  width: min(640px, 100%);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 32px;
+}
+
+.form-headline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.badge-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .serie-form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  margin-top: 1rem;
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 .loading-block {
@@ -41,5 +64,5 @@ mat-card {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: #6c757d;
+  color: var(--text-muted);
 }

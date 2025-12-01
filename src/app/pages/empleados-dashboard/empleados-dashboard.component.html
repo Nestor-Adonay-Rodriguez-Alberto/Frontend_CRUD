@@ -4,14 +4,32 @@
     <span>Panel de Empleados</span>
   </div>
   <span class="spacer"></span>
-  <button mat-button (click)="logout()">
+  <button mat-stroked-button class="outline-action" (click)="logout()">
     <mat-icon>logout</mat-icon>
     Cerrar sesión
   </button>
 </mat-toolbar>
 
 <div class="dashboard-container">
-  <mat-card>
+  <section class="hero-section glass-panel">
+    <div>
+      <span class="pill">Talento</span>
+      <h2 class="hero-title">Visualiza y cuida a tu equipo</h2>
+      <p class="hero-subtitle">Monitoriza roles, mantén la información segura y actualiza los perfiles en segundos.</p>
+    </div>
+    <div class="hero-metrics">
+      <div class="metric-card">
+        <span>Colaboradores registrados</span>
+        <strong>{{ totalItems || empleados.length }}</strong>
+      </div>
+      <div class="metric-card">
+        <span>Página actual</span>
+        <strong>{{ page }} / {{ totalPages }}</strong>
+      </div>
+    </div>
+  </section>
+
+  <mat-card class="dashboard-card glass-panel">
     <mat-card-header>
       <div class="header-content">
         <div>
@@ -27,7 +45,7 @@
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
-          <button mat-flat-button color="accent" (click)="createEmpleado()">
+          <button mat-flat-button class="elevated-action" (click)="createEmpleado()">
             <mat-icon>add</mat-icon>
             Nuevo empleado
           </button>
@@ -81,9 +99,9 @@
     </mat-card-content>
 
     <mat-card-actions class="paginator" *ngIf="totalItems > pageSize">
-      <button mat-button (click)="previousPage()" [disabled]="page === 1">Anterior</button>
+      <button mat-stroked-button (click)="previousPage()" [disabled]="page === 1">Anterior</button>
       <span>Página {{ page }} de {{ totalPages }}</span>
-      <button mat-button (click)="nextPage()" [disabled]="page * pageSize >= totalItems">Siguiente</button>
+      <button mat-stroked-button (click)="nextPage()" [disabled]="page * pageSize >= totalItems">Siguiente</button>
     </mat-card-actions>
   </mat-card>
 </div>

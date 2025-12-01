@@ -4,16 +4,24 @@
   </button>
   <span>{{ title }}</span>
   <span class="spacer"></span>
+  <button mat-stroked-button class="outline-action" (click)="cancel()">
+    <mat-icon>list</mat-icon>
+    Volver
+  </button>
 </mat-toolbar>
 
 <div class="form-container">
-  <mat-card>
-    <mat-card-header>
+  <mat-card class="form-card glass-panel">
+    <div class="form-headline">
       <div>
-        <mat-card-title>{{ title }}</mat-card-title>
-        <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
+        <span class="pill">{{ isReadOnly ? 'Detalle' : isEditMode ? 'Edición' : 'Registro' }}</span>
+        <h2>{{ title }}</h2>
+        <p class="text-muted">{{ subtitle }}</p>
       </div>
-    </mat-card-header>
+      <div class="badge-group">
+        <span class="badge">{{ isEditMode ? 'ID: ' + empleadoId : 'Nuevo colaborador' }}</span>
+      </div>
+    </div>
 
     <mat-card-content>
       <form [formGroup]="empleadoForm" (ngSubmit)="handleSubmit()">
@@ -42,20 +50,20 @@
             </mat-error>
           </mat-form-field>
         </div>
+
+        <div class="loading-block" *ngIf="loadingEmpleado">
+          <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+          <span>Cargando información...</span>
+        </div>
+
+        <div class="actions" *ngIf="!isReadOnly">
+          <button mat-stroked-button (click)="cancel()" [disabled]="savingEmpleado">Cancelar</button>
+          <button mat-flat-button class="elevated-action" type="submit" [disabled]="savingEmpleado">
+            <mat-icon>save</mat-icon>
+            Guardar
+          </button>
+        </div>
       </form>
-
-      <div class="loading-block" *ngIf="loadingEmpleado">
-        <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
-        <span>Cargando información...</span>
-      </div>
     </mat-card-content>
-
-    <mat-card-actions class="actions" *ngIf="!isReadOnly">
-      <button mat-stroked-button color="primary" (click)="cancel()" [disabled]="savingEmpleado">Cancelar</button>
-      <button mat-flat-button color="accent" (click)="handleSubmit()" [disabled]="savingEmpleado">
-        <mat-icon>save</mat-icon>
-        Guardar
-      </button>
-    </mat-card-actions>
   </mat-card>
 </div>

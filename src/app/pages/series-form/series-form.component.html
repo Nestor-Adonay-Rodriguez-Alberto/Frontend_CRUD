@@ -4,18 +4,24 @@
   </button>
   <span>{{ title }}</span>
   <span class="spacer"></span>
-  <button mat-button (click)="cancel()">
+  <button mat-stroked-button class="outline-action" (click)="cancel()">
     <mat-icon>list</mat-icon>
-    Volver al listado
+    Volver
   </button>
 </mat-toolbar>
 
 <div class="form-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ title }}</mat-card-title>
-      <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
-    </mat-card-header>
+  <mat-card class="form-card glass-panel">
+    <div class="form-headline">
+      <div>
+        <span class="pill">{{ isReadOnly ? 'Consulta' : isEditMode ? 'Edición' : 'Alta' }}</span>
+        <h2>{{ title }}</h2>
+        <p class="text-muted">{{ subtitle }}</p>
+      </div>
+      <div class="badge-group">
+        <span class="badge">{{ isEditMode ? 'ID: ' + serieId : 'Nuevo registro' }}</span>
+      </div>
+    </div>
 
     <mat-card-content *ngIf="!loadingSerie; else loadingState">
       <form [formGroup]="serieForm" (ngSubmit)="handleSubmit()" class="serie-form">
@@ -37,7 +43,7 @@
           <button mat-stroked-button type="button" (click)="cancel()">
             {{ isReadOnly ? 'Volver' : 'Cancelar' }}
           </button>
-          <button *ngIf="!isReadOnly" mat-flat-button color="accent" type="submit" [disabled]="savingSerie">
+          <button *ngIf="!isReadOnly" mat-flat-button class="elevated-action" type="submit" [disabled]="savingSerie">
             <mat-progress-spinner *ngIf="savingSerie" diameter="20" mode="indeterminate"></mat-progress-spinner>
             <span *ngIf="!savingSerie">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
           </button>

@@ -1,8 +1,16 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 :root {
-	font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	font-family: 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif;
 	color: #0f172a;
+	--primary-color: #5a31f4;
+	--primary-dark: #3a1bb1;
+	--secondary-color: #0fb9b1;
+	--gradient-start: #5a31f4;
+	--gradient-end: #0fb9b1;
+	--surface-color: #ffffff;
+	--surface-muted: #f5f7fb;
+	--text-muted: #6b7280;
 }
 
 * {
@@ -11,11 +19,23 @@
 
 body {
 	margin: 0;
-	background-color: #f5f7fb;
+	min-height: 100vh;
+	background: linear-gradient(135deg, rgba(90, 49, 244, 0.08), rgba(15, 185, 177, 0.08));
+	color: #0f172a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+	color: #0f172a;
 }
 
 .snackbar-success {
-	background-color: #2e7d32;
+	background-color: #1b9e4b;
 	color: #fff;
 }
 
@@ -30,6 +50,52 @@ body {
 }
 
 mat-card {
-	box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-	border-radius: 16px;
+	box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+	border-radius: 18px;
+}
+
+.glass-panel {
+	background: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.35rem 0.85rem;
+	border-radius: 999px;
+	font-size: 0.8rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	background: rgba(90, 49, 244, 0.12);
+	color: var(--primary-dark);
+}
+
+.text-muted {
+	color: var(--text-muted);
+}
+
+.hero-title {
+	font-size: clamp(2.25rem, 5vw, 3rem);
+	font-weight: 700;
+	margin: 0;
+}
+
+.hero-subtitle {
+	font-size: 1.1rem;
+	color: var(--text-muted);
+	margin: 0.75rem 0 0;
+}
+
+.elevated-action {
+	background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+	color: #fff !important;
+	box-shadow: 0 12px 30px rgba(90, 49, 244, 0.35);
+}
+
+.outline-action {
+	border-color: rgba(90, 49, 244, 0.35);
+	color: var(--primary-dark) !important;
 }

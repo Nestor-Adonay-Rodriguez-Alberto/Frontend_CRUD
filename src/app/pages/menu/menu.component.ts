@@ -29,6 +29,7 @@ export class MenuComponent {
       route: '/empleados'
     }
   ];
+  readonly today = new Date();
 
   constructor(private router: Router, private authService: AuthService) {}
 

@@ -4,29 +4,50 @@
     <span>Panel principal</span>
   </div>
   <span class="spacer"></span>
-  <button mat-button (click)="logout()">
+  <button mat-stroked-button class="outline-action" (click)="logout()">
     <mat-icon>logout</mat-icon>
     Cerrar sesión
   </button>
 </mat-toolbar>
 
 <div class="menu-container">
-  <mat-card class="welcome-card">
-    <mat-card-header>
-      <div>
-        <mat-card-title>Bienvenido</mat-card-title>
-        <mat-card-subtitle>Selecciona la sección que deseas administrar</mat-card-subtitle>
+  <section class="menu-hero glass-panel">
+    <div>
+      <span class="pill">Centro administrativo</span>
+      <h1 class="hero-title">Todo lo que necesitas, en dos módulos clave</h1>
+      <p class="hero-subtitle">Gestiona el contenido audiovisual y la información del personal con una estética moderna y consistente.</p>
+      <div class="hero-actions">
+        <button mat-flat-button class="elevated-action" (click)="navigate(options[0].route)">
+          <mat-icon>{{ options[0].icon }}</mat-icon>
+          Ir a Series
+        </button>
+        <button mat-stroked-button class="outline-action" (click)="navigate(options[1].route)">
+          <mat-icon>{{ options[1].icon }}</mat-icon>
+          Ir a Empleados
+        </button>
       </div>
-    </mat-card-header>
-  </mat-card>
+    </div>
+    <div class="stat-panel">
+      <div class="stat-card">
+        <span>Último acceso</span>
+        <strong>{{ today | date:'dd/MM/yyyy' }}</strong>
+      </div>
+      <div class="stat-card">
+        <span>Módulos activos</span>
+        <strong>{{ options.length }}</strong>
+      </div>
+    </div>
+  </section>
 
   <div class="options-grid">
-    <mat-card class="option-card" *ngFor="let option of options" (click)="navigate(option.route)" tabindex="0">
+    <mat-card class="option-card glass-panel" *ngFor="let option of options" (click)="navigate(option.route)" tabindex="0">
       <mat-card-content>
-        <mat-icon>{{ option.icon }}</mat-icon>
+        <div class="option-icon">
+          <mat-icon>{{ option.icon }}</mat-icon>
+        </div>
         <h3>{{ option.title }}</h3>
         <p>{{ option.description }}</p>
-        <button mat-stroked-button color="primary">Ir a {{ option.title }}</button>
+        <button mat-stroked-button class="outline-action">Acceder</button>
       </mat-card-content>
     </mat-card>
   </div>
